@@ -1,0 +1,56 @@
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+public class MainActivity extends AppCompatActivity {
+    EditText val;
+    TextView res;
+    Spinner curr;
+    Button convert_button;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        val = (EditText) findViewById(R.id.value);
+        res = (TextView) findViewById(R.id.result);
+        curr = (Spinner) findViewById(R.id.currency);
+        convert_button = (Button) findViewById(R.id.convert_button);
+        String[] spinner_items = new String[]{"Select", "Rupee to Dollar", "Dollar to Rupee", "Rupee to Yen", "Yen to Rupee"};
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, spinner_items);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        curr.setAdapter(adapter);
+        convert_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String v = val.getText().toString();
+                if (v.equals("")) {
+                    Toast.makeText(MainActivity.this, "Please enter a value !",
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    int a = Integer.parseInt(v);
+                    int pos = curr.getSelectedItemPosition();
+                    double Res = 0;
+                    if (pos == 1) {
+                        Res = a / 73.44;
+                    } else if (pos == 2) {
+                        Res = a * 73.44;
+                    } else if (pos == 3) {
+                        Res = a * 1.44;
+                    } else if (pos == 4) {
+                        Res = a / 1.44;
+                    } else {
+                        Toast.makeText(MainActivity.this, "Please select an Option !", Toast.LENGTH_SHORT).show();
+                    }
+                    res.setText("Result : " + Res);
+                }
+            }
+        });
+    }
+}
